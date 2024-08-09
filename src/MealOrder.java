@@ -2,51 +2,33 @@ public class MealOrder {
     private Item side, drink;
     private Burger burger;
 
-    public MealOrder(Item side, Item drink, Burger burger) {
-        this.side = side;
-        this.drink = drink;
-        this.burger = burger;
-    }
-
     public MealOrder() {
-        this.side = new Item("Fries", "Side", "M", 2.50);
-        this.drink = new Item("Coke", "Drink", "M", 1);
-        this.burger = new Burger("Cheese", 7.10);
+        this("regular", "pepsi", "fries");
     }
-
-    public void addToppings(Item extra1, Item extra2, Item extra3) {
-        burger.addToppings(extra1, extra2, extra3);
-
-    }
-
-    public void addToppings(Item extra1, Item extra2, Item extra3, Item extra4, Item extra5) {
-        burger.addToppings(extra1, extra2, extra3, extra4, extra5);
-
+    public MealOrder(String burger, String drink, String side) {
+        this.burger = new Burger(burger, 4.0);
+        this.drink = new Item("drink", drink, 1.00);
+        this.side = new Item("side", side, 1.50);
     }
 
     public void setDrinkSize(String size) {
-        this.drink.setSize(size);
+        drink.setSize(size);
+    }
+
+    public double getTotalPrice() {
+        return side.getAdjustedPrice() + drink.getAdjustedPrice() +
+                burger.getAdjustedPrice();
     }
 
     public void printItemizedList() {
-        side.printItem();
-        System.out.printf("Price: $%.2f%n", side.getAdjustedPrice());
-        drink.printItem();
-        System.out.printf("Price: $%.2f%n", drink.getAdjustedPrice());
         burger.printItem();
-
-//        burger.top1().printItem();
-//        System.out.printf("Price: $%.2f%n", burger.top1().getBasePrice());
-//        burger.top2().printItem();
-//        System.out.printf("Price: $%.2f%n", burger.top2().getBasePrice());
-//        burger.top3().printItem();
-//        System.out.printf("Price: $%.2f%n", burger.top3().getBasePrice());
-
+        drink.printItem();
+        side.printItem();
+        System.out.println("-".repeat(30));
+        Item.printItem("TOTAL PRICE", getTotalPrice());
     }
 
-    public void printTotal() {
-        double total = side.getAdjustedPrice() + drink.getAdjustedPrice() + burger.getBasePrice() + burger.totalToppingPrice();
-        System.out.printf("""
-                Your total is $%.2f""", total);
+    public void addBurgerToppings(String extra1, String extra2, String extra3) {
+        burger.addToppings(extra1, extra2, extra3);
     }
 }

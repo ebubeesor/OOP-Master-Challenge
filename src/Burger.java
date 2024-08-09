@@ -23,11 +23,12 @@ public class Burger extends Item {
         return switch (name.toLowerCase()) {
             case "pickles", "tomato", "onion" -> 0.5;
             case "bacon", "ham", "cheese" -> 1.0;
+            case "mayo", "ketchup" -> 0.3;
             default -> 0.0;
         };
     }
 
-    public void addToppings(Item extra1, Item extra2, Item extra3) {
+    public void addToppings(String extra1, String extra2, String extra3) {
         this.extra1 = new Item("TOPPING", extra1,
                 getExtraPrice(extra1));
         this.extra2 = new Item("TOPPING", extra2,
