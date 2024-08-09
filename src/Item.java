@@ -1,46 +1,47 @@
 public class Item {
-    private String name, type, size;
+
+    private String type;
+    private String name;
     private double price;
+    private String size = "MEDIUM";
 
-
-    public Item(String name, String type, String size, double price) {
-        this.name = name;
-        this.type = type;
-        this.size = size;
+    public Item(String type, String name, double price) {
+        this.type = type.toUpperCase();
+        this.name = name.toUpperCase();
         this.price = price;
     }
 
-//    Topping Contstructor
-    public Item(String name, String type, double price) {
-        this.name = name;
-        this.type = type;
-        this.price = price;
-        this.size = "N/A";
+    public String getName() {
+
+        if (type.equals("SIDE") || type.equals("DRINK")) {
+            return size + " " + name;
+        }
+
+        return name;
     }
 
-    public void setSize(String size){
-        this.size = size;
-    }
     public double getBasePrice() {
         return price;
     }
 
     public double getAdjustedPrice() {
-        if (type.equalsIgnoreCase("drink") || type.equalsIgnoreCase("side")) {
-            return switch (size) {
-                case "S" -> price * 0.8;
-                case "L" -> price * 1.2;
-                default -> price;
-            };
-        } else {
-            return 0;
-        }
+        return switch (size) {
+            case "SMALL" -> getBasePrice() - 0.5;
+            case "LARGE" -> getBasePrice() + 1;
+            default -> getBasePrice();
+        };
+    }
 
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public static void printItem(String name, double price) {
+        System.out.printf("%20s:%6.2f%n", name, price);
     }
 
     public void printItem() {
-        System.out.printf("""
-                %s %s
-                Size: %s%n""", name, type, size);
+        printItem(getName(), getAdjustedPrice());
     }
+
 }
