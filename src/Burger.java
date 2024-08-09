@@ -1,55 +1,60 @@
 public class Burger extends Item {
     private Item extra1, extra2, extra3;
-    private Item extra4, extra5;
 
-    public Burger(String type, double price) {
-        super("Burger", type, "N/A", price);
+    public Burger(String name, double price) {
+        super("Burger", name, price);
+    }
+
+    @Override
+    public String getName() {
+        return super.getName() + "Burger";
+    }
+
+    @Override
+    public double getAdjustedPrice() {
+        return getBasePrice() +
+                ((extra1 == null) ? 0 : extra1.getAdjustedPrice()) +
+                ((extra2 == null) ? 0 : extra2.getAdjustedPrice()) +
+                ((extra3 == null) ? 0 : extra3.getAdjustedPrice());
+    }
+
+    public double getExtraPrice(String name) {
+
+        return switch (name.toLowerCase()) {
+            case "pickles", "tomato", "onion" -> 0.5;
+            case "bacon", "ham", "cheese" -> 1.0;
+            default -> 0.0;
+        };
     }
 
     public void addToppings(Item extra1, Item extra2, Item extra3) {
-        this.extra1 = extra1;
-        this.extra2 = extra2;
-        this.extra3 = extra3;
+        this.extra1 = new Item("TOPPING", extra1,
+                getExtraPrice(extra1));
+        this.extra2 = new Item("TOPPING", extra2,
+                getExtraPrice(extra2));
+        this.extra3 = new Item("TOPPING", extra3,
+                getExtraPrice(extra3));
     }
 
-    public void addToppings(Item extra1, Item extra2, Item extra3, Item extra4, Item extra5) {
-        this.extra1 = extra1;
-        this.extra2 = extra2;
-        this.extra3 = extra3;
-        this.extra4 = extra4;
-        this.extra5 = extra5;
+    public void printItemizedList() {
+
+        printItem("BASE BURGER", getBasePrice());
+        if (extra1 != null) {
+            extra1.printItem();
+        }
+        if (extra2 != null) {
+            extra2.printItem();
+        }
+        if (extra3 != null) {
+            extra3.printItem();
+        }
     }
 
-    public double getToppingPrice(Item topping) {
-        return topping.getBasePrice();
-    }
-
-    public double totalToppingPrice() {
-
-        double total = extra1.getBasePrice() + extra2.getBasePrice() + extra3.getBasePrice();
-//
-       return (total != null) ? total : 0;
-    }
-
-
-    public Item top1() {
-        return extra1;
-    }
-
-    public Item top2() {
-        return extra2;
-    }
-
-    public Item top3() {
-        return extra3;
-    }
-
-    public Item top4() {
-        return extra4;
-    }
-
-    public Item top5() {
-        return extra5;
+    @Override
+    public void printItem() {
+        printItemizedList();
+        System.out.println("-".repeat(30));
+        super.printItem();
     }
 
 }
